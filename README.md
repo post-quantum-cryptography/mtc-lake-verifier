@@ -1,4 +1,4 @@
-# mtc-lake-verifier
+# MTC verifier for LAKE protocol
 
 A prototype of the **verifier core** for Merkle Tree Certificates (MTC), the
 piece [draft-kwiatkowski-mtc-iot](https://github.com/kwiatkowski/draft-kwiatkowski-mtc-iot)
