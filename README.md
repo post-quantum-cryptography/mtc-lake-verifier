@@ -6,13 +6,11 @@ piece [draft-kwiatkowski-mtc-iot](https://github.com/kwiatkowski/draft-kwiatkows
 landmark-relative certificate against its cached landmark.
 
 **📖 [Read the book](https://post-quantum-cryptography.github.io/mtc-lake-verifier/)**
-for the full picture: an MTC primer, how this crate maps to the spec, how
-it's verified (against the spec's own official test vectors, not against
-another implementation), how to run a local MTC CA to generate real test
-inputs, and what's still missing before this is a usable implementation of
-the IoT draft. (The link goes live once this is pushed and GitHub Pages is
-enabled for the repo — see `book/` and `.github/workflows/book.yml` until
-then.)
+for how this crate maps to the spec and how to run a local MTC CA to
+generate real test inputs. (The Pages deploy is currently disabled in
+`.github/workflows/book.yml` — this org's plan doesn't support Pages on a
+private repo. Re-enable it once the repo is public; until then, build
+locally with `mdbook build book`.)
 
 ## Documentation
 
@@ -42,5 +40,6 @@ tests/
 book/           mdBook source for the documentation linked above
 .github/workflows/
   ci.yml          fmt, clippy, build, test
-  book.yml        builds and (on main) deploys the book to GitHub Pages
+  book.yml        builds the book on every push/PR; Pages deploy step
+                  is commented out until the repo is public
 ```

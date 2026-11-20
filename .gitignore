@@ -1,1 +1,7 @@
 /target/
+
+# local scratch space for the "Running a local PKI" walkthrough
+/mtc-demo/
+/mtc-state.json
+*-cert.pem
+subject-*.key.pem
