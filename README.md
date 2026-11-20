@@ -14,6 +14,15 @@ the IoT draft. (The link goes live once this is pushed and GitHub Pages is
 enabled for the repo — see `book/` and `.github/workflows/book.yml` until
 then.)
 
+## Documentation
+
+To generate documentation:
+
+```sh
+mdbook build book    # static HTML into target/book/
+mdbook serve book    # live-reloading local server (http://localhost:3000), rebuilds on save
+```
+
 ## Running it
 
 ```sh
