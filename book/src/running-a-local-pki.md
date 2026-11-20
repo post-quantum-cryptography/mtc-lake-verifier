@@ -1,28 +1,16 @@
 # Running a local PKI
 
-The test suite uses synthetic single-byte log entries, which is fine for
-checking the proof math but says nothing about parsing a real,
-wire-format MTC certificate. To get real certificate and landmark bytes to
-test against, you need a CA — and for that, `mtc-demo` is the closest
-match to the draft revision this crate targets.
+Use this to get real certificate and landmark bytes to test against,
+instead of the synthetic single-byte entries `tests/spec_vectors.rs` uses.
 
-## It's a CLI, not a server
+[`mtc-demo`](https://github.com/robstradling/mtc-demo) is a CLI that reads
+and writes a local `./mtc-state.json` file — there's no server/HTTP mode.
+Running its binary is fine; this repo does not vendor its source (it ships
+with no LICENSE file).
 
-`robstradling/mtc-demo` has no `serve`/HTTP mode. Every "PKI role" — CA,
-cosigner, mirror, relying party, landmark manager — is a CLI subcommand
-that reads and writes a local `./mtc-state.json` file. "Running the PKI"
-means running this sequence of commands, not standing up a long-lived
-service.
+## Build
 
-> As covered in [Verification methodology](./verification-methodology.md),
-> `mtc-demo` ships with no `LICENSE` file. Running its CLI as an external
-> tool — building the binary and invoking it — is fine; copying its source
-> into this crate is not, and this crate doesn't do that.
-
-## Build it
-
-Requires Go 1.25+ and network access (fetches `golang.org/x/crypto` and
-`filippo.io/mldsa`):
+Requires Go 1.25+ and network access:
 
 ```sh
 git clone https://github.com/robstradling/mtc-demo
@@ -30,14 +18,13 @@ cd mtc-demo
 go build -o mtc-demo ./cmd/mtc-demo/
 ```
 
-## Stand up a CA, issue a certificate, allocate a landmark
+## Issue a certificate and allocate a landmark
 
-Run these in an empty working directory — state persists in
-`./mtc-state.json` between commands:
+Run in an empty working directory:
 
 ```sh
 ./mtc-demo ca init 32473.1 1               # CA ID, log number
-./mtc-demo cosigner keygen 32473.1 p256    # CA's own cosigner key (ID = CA ID, §5.4)
+./mtc-demo cosigner keygen 32473.1 p256    # CA's own cosigner key (ID = CA ID)
 ./mtc-demo cosigner keygen 32473.100 ed25519
 ./mtc-demo cosigner keygen 32473.200 p256
 ./mtc-demo ca cert                          # -> ca-cert.pem
@@ -46,7 +33,7 @@ Run these in an empty working directory — state persists in
 ./mtc-demo ca add test.example.com          # (index 2)
 ./mtc-demo ca checkpoint                    # builds the tree, prints subtree hashes
 
-./mtc-demo cosigner sign 32473.100 0 2      # cosign each subtree the checkpoint printed
+./mtc-demo cosigner sign 32473.100 0 2      # cosign each subtree checkpoint printed
 ./mtc-demo cosigner sign 32473.200 0 2
 ./mtc-demo cosigner sign 32473.100 2 3
 ./mtc-demo cosigner sign 32473.200 2 3
@@ -90,12 +77,10 @@ Landmark allocated:
     [2, 3): ef40ac6705a414130fe50d39318e636b9be15ff562368655fc81db4e444db3fe
 ```
 
-## What this is missing, to be useful as a test input
+## Using the output
 
-`cert-1.pem` is an X.509-encoded certificate carrying an `MTCProof`
-extension (§6.2 of the spec). Nothing in this crate yet parses that
-extension out into the `(index, start, end, proof, subtree_hash)` tuple
-`verify_subtree_inclusion_proof` expects — see
-[Roadmap](./roadmap.md). Until that parser exists, this walkthrough is
-useful for manual sanity-checking and as a target to build the parser
-against, but it isn't wired into the automated test suite.
+`cert-1.pem` is X.509 carrying an `MTCProof` extension. Nothing in `src/`
+parses that extension yet into the `(index, start, end, proof,
+subtree_hash)` tuple `verify_subtree_inclusion_proof` takes — that parser
+is the next piece needed to turn this into an automated test rather than a
+manual walkthrough.

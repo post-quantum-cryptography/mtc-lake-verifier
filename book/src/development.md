@@ -8,23 +8,21 @@ cargo fmt --all -- --check
 cargo clippy --all-targets -- -D warnings
 ```
 
-All four are what `.github/workflows/ci.yml` runs on every push and pull
-request against `main`.
+All four run in `.github/workflows/ci.yml` on every push and pull request.
+
+## Tests
+
+- `tests/spec_vectors.rs` checks `src/proof.rs` and `src/hash.rs` against
+  the three official digests published in Appendix C.1 of the spec
+  ("Accumulated Subtree Test Vectors"), including the spec's prescribed
+  truncate/extend/bit-flip negative tests.
+- `tests/cosign.rs` checks `src/cosign.rs` and `src/trustanchorid.rs`
+  against the one worked OID example the spec gives (§5.3.1), and
+  sign/verify round trips for P-256 and Ed25519.
 
 ## Building this book
 
 ```sh
 mdbook build book    # output in target/book
 mdbook serve book    # live-reloading local server
-```
-
-## Layout recap
-
-```
-src/            the verifier crate (see Crate architecture)
-tests/
-  spec_vectors.rs   reference prover + Appendix C.1 official test vectors
-  cosign.rs         OID worked example + P-256/Ed25519 sign-verify round trips
-book/           this book
-.github/workflows/ci.yml
 ```
