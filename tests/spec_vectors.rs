@@ -98,7 +98,15 @@ fn subtree_subproof(
         proof.push(mth(&d[tree_start..tree_start + k]));
     } else {
         // start < k < end implies sub_start == 0.
-        subtree_subproof(d, tree_start + k, end, tree_start + k, tree_end, false, proof);
+        subtree_subproof(
+            d,
+            tree_start + k,
+            end,
+            tree_start + k,
+            tree_end,
+            false,
+            proof,
+        );
         proof.push(mth(&d[tree_start..tree_start + k]));
     }
 }
@@ -151,10 +159,7 @@ fn appendix_c_1_2_subtree_inclusion_proofs() {
             }
             let subtree_hash = mth(&d[start as usize..end as usize]);
             for index in start..end {
-                let proof = path(
-                    &d[start as usize..end as usize],
-                    (index - start) as usize,
-                );
+                let proof = path(&d[start as usize..end as usize], (index - start) as usize);
 
                 let mut line = format!("{index} [{start}, {end})");
                 for p in &proof {
@@ -175,7 +180,9 @@ fn appendix_c_1_2_subtree_inclusion_proofs() {
                     start,
                     end,
                 )
-                .unwrap_or_else(|e| panic!("valid proof rejected: index={index} [{start},{end}): {e}"));
+                .unwrap_or_else(|e| {
+                    panic!("valid proof rejected: index={index} [{start},{end}): {e}")
+                });
 
                 if !proof_bytes.is_empty() {
                     // Step 3: truncating by one byte, or a full hash, must fail.

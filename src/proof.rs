@@ -30,7 +30,7 @@ pub fn evaluate_subtree_inclusion_proof(
     if index < start || index >= end {
         return Err(err(format!("index {index} not in [{start}, {end})")));
     }
-    if proof.len() % HASH_SIZE != 0 {
+    if !proof.len().is_multiple_of(HASH_SIZE) {
         return Err(err(format!(
             "proof length {} not a multiple of {HASH_SIZE}",
             proof.len()
@@ -114,7 +114,7 @@ pub fn verify_subtree_consistency_proof(
     if end > n {
         return Err(err(format!("subtree end {end} > tree size {n}")));
     }
-    if proof.len() % HASH_SIZE != 0 {
+    if !proof.len().is_multiple_of(HASH_SIZE) {
         return Err(err(format!(
             "proof length {} not a multiple of {HASH_SIZE}",
             proof.len()

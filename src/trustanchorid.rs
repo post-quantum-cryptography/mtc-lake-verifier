@@ -59,9 +59,9 @@ impl TrustAnchorId {
     pub fn parse(s: &str) -> Result<Self, TrustAnchorIdError> {
         let mut t = Vec::new();
         for part in s.split('.') {
-            let v: u64 = part
-                .parse()
-                .map_err(|_| TrustAnchorIdError(format!("invalid trust anchor ID component {part:?}")))?;
+            let v: u64 = part.parse().map_err(|_| {
+                TrustAnchorIdError(format!("invalid trust anchor ID component {part:?}"))
+            })?;
             append_base128(&mut t, v);
         }
         if t.is_empty() {
@@ -86,8 +86,9 @@ impl TrustAnchorId {
         let mut s = String::new();
         let mut rest: &[u8] = &self.0;
         while !rest.is_empty() {
-            let (v, r) = parse_base128(rest)
-                .ok_or_else(|| TrustAnchorIdError(format!("invalid trust anchor ID: {:x?}", self.0)))?;
+            let (v, r) = parse_base128(rest).ok_or_else(|| {
+                TrustAnchorIdError(format!("invalid trust anchor ID: {:x?}", self.0))
+            })?;
             if !s.is_empty() {
                 s.push('.');
             }

@@ -55,9 +55,8 @@ fn marshal_cosigned_subtree(
     Ok(b)
 }
 
-/// Verifies a cosignature over a subtree (§5.3), independent of the Go
-/// reference: this recomputes the signed input from scratch and verifies it
-/// with this crate's own ECDSA/Ed25519 code.
+/// Verifies a cosignature over a subtree (§5.3).
+#[allow(clippy::too_many_arguments)]
 pub fn verify_cosignature(
     cosigner_id: &TrustAnchorId,
     log_id: &TrustAnchorId,

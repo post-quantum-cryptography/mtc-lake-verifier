@@ -23,7 +23,10 @@ fn log_and_landmark_ids_round_trip_through_oid_name() {
     assert_eq!(log.oid_name().unwrap(), "oid/1.3.6.1.4.1.32473.1.0.1");
 
     let landmark = ca.landmark_id(1, 7);
-    assert_eq!(landmark.oid_name().unwrap(), "oid/1.3.6.1.4.1.32473.1.1.1.7");
+    assert_eq!(
+        landmark.oid_name().unwrap(),
+        "oid/1.3.6.1.4.1.32473.1.1.1.7"
+    );
 }
 
 #[test]
