@@ -1,0 +1,15 @@
+[book]
+title = "mtc-lake-verifier"
+description = "A verifier core for Merkle Tree Certificates, prototyping the device-side checks draft-kwiatkowski-mtc-iot needs"
+authors = ["Kris Kwiatkowski"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "../target/book"
+
+[output.html]
+git-repository-url = "https://github.com/post-quantum-cryptography/mtc-lake-verifier"
+edit-url-template = "https://github.com/post-quantum-cryptography/mtc-lake-verifier/edit/main/book/{path}"
+default-theme = "light"
+preferred-dark-theme = "navy"
